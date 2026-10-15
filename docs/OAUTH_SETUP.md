@@ -2,7 +2,9 @@
 
 Guia para criar o projeto, habilitar a YouTube Data API v3 e gerar o OAuth Client ID Android usado pelo Local2Playlist. Necessário antes dos spikes de OAuth e cota da Fase 0.
 
-> Fonte primária: [Android Quickstart — YouTube Data API](https://developers.google.com/youtube/v3/quickstart/android) (conferido em 14/10/2026). Os pontos sobre modo "Testing" vs "Production" da tela de consentimento (refresh token de 7 dias, limite de 100 usuários — seção 3 de `docs/SPEC.md`) vêm de outra parte do Console e devem ser reconfirmados na tela "OAuth consent screen" > "Publishing status" ao configurar — **VERIFICAR**.
+> Fonte primária: [Android Quickstart — YouTube Data API](https://developers.google.com/youtube/v3/quickstart/android) (conferido em 14/10/2026) para os passos de criação de credenciais. O quickstart está desatualizado em nomenclatura (ainda chama o Console de "Google Developers Console") — os nomes de menu abaixo seguem o Cloud Console atual.
+>
+> **Confirmado em 14/10/2026** (não é mais VERIFICAR): em status "Testing" (app não verificado), o refresh token expira em **7 dias**, mesmo com múltiplas reautorizações — essa é a causa raiz documentada (status não verificado), e a única correção permanente é publicar/verificar o app ou usar tipo "Interno" com Google Workspace. Ver [explicação detalhada](https://www.unipile.com/google-oauth-refresh-token/) (fonte terceira, não a documentação oficial do Google — vale reconfirmar na doc oficial do Google Identity antes de decisão final de produção).
 
 ## 1. Criar o projeto e habilitar a API
 
@@ -35,7 +37,7 @@ Senha padrão do keystore de debug: `android`. Copie o valor `SHA1:` da saída.
 
 1. Em "APIs e serviços" → "Credenciais" → "Criar credenciais" → "ID do cliente OAuth".
 2. Tipo de aplicativo: **Android**.
-3. Nome do pacote: o `applicationId` que vamos definir no `app.json`/`android/app/build.gradle` do projeto Expo — provavelmente algo como `com.laranjodupy.local2playlist` (a confirmar quando o projeto Expo for criado na Fase 0).
+3. Nome do pacote: `com.laranjodupy.local2playlist` (confirmado — já definido em `app.json`).
 4. Cole o SHA-1 obtido no passo 3.
 5. Clique em **Criar**.
 
@@ -54,5 +56,5 @@ Depois de concluir os passos acima, me passe:
 
 ## 6. Limitações conhecidas (a validar no spike)
 
-- Modo "Testing": até 100 usuários de teste, refresh token pode expirar em 7 dias (VERIFICAR nesta configuração).
+- Modo "Testing": até 100 usuários de teste, refresh token expira em 7 dias (confirmado — ver nota no topo deste documento).
 - Cota do projeto: 100 unidades/dia em `search.list` (balde próprio) + 10.000 unidades/dia combinadas para os demais métodos (seção 3 da spec, fonte: Quota Calculator oficial, atualizada 08/10/2026). Vamos medir o consumo real ao criar uma playlist de teste na Fase 0 e registrar em `docs/QUOTA.md`.
