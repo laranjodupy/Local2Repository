@@ -23,22 +23,40 @@ Guia para criar o projeto, habilitar a YouTube Data API v3 e gerar o OAuth Clien
 
 ## 3. Obter o SHA-1 do certificado de assinatura (debug)
 
-No seu ambiente local (não nesta sessão — este workspace não tem o keystore de debug do seu Android Studio):
+No Windows (`cmd.exe`), `~` não é expandido — use `%USERPROFILE%`. Se o
+keystore de debug ainda não existir, gere um novo:
 
-```bash
-keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore -list -v
+```bat
+mkdir %USERPROFILE%\.android
+keytool -genkey -v -keystore %USERPROFILE%\.android\debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
 ```
 
-Senha padrão do keystore de debug: `android`. Copie o valor `SHA1:` da saída.
+Depois extraia o SHA-1:
 
-> Isso precisa ser rodado na sua máquina (ou no seu emulador/Android Studio), já que o keystore de debug é gerado localmente na primeira vez que você builda um projeto Android ali. Se você ainda não tem um `debug.keystore`, o Android Studio cria um automaticamente no primeiro build — ou rode `keytool -genkey -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000`.
+```bat
+keytool -list -v -keystore %USERPROFILE%\.android\debug.keystore -alias androiddebugkey -storepass android -keypass android
+```
+
+Em Linux/macOS, o caminho equivalente é `~/.android/debug.keystore` e os
+comandos funcionam como estão (shell POSIX expande `~`).
+
+**SHA-1 gerado em 14/10/2026 (debug, máquina do Daniel):**
+```
+50:2B:95:DE:A8:87:C5:22:ED:92:0A:FF:B7:CC:2B:E2:42:17:F7:38
+```
+
+> Este é o certificado de **debug**, válido só para builds de desenvolvimento
+> assinadas localmente. Um build de release (Play Store ou APK assinado para
+> distribuição) usa um keystore diferente, com SHA-1 diferente — será preciso
+> registrar um segundo OAuth Client ID (ou adicionar essa segunda impressão
+> digital ao mesmo client, se o Console permitir) quando chegar a Fase 3/4.
 
 ## 4. Criar o OAuth Client ID (tipo Android)
 
 1. Em "APIs e serviços" → "Credenciais" → "Criar credenciais" → "ID do cliente OAuth".
 2. Tipo de aplicativo: **Android**.
 3. Nome do pacote: `com.laranjodupy.local2playlist` (confirmado — já definido em `app.json`).
-4. Cole o SHA-1 obtido no passo 3.
+4. Cole o SHA-1 obtido no passo 3 (ou o valor já gerado acima).
 5. Clique em **Criar**.
 
 **Resultado:** você recebe um **Client ID** (termina em `.apps.googleusercontent.com`). Apps Android instalados **não recebem nem devem armazenar** `client_secret` (seção 5.5/15 da spec) — só o Client ID é necessário no app.
