@@ -1,0 +1,15 @@
+{
+  "common": {
+    "appName": "Local2Playlist",
+    "continue": "Continuar",
+    "cancel": "Cancelar",
+    "back": "Voltar",
+    "retry": "Tentar novamente",
+    "loading": "Carregando..."
+  },
+  "home": {
+    "title": "Local2Playlist",
+    "subtitle": "Transforme sua pasta de músicas em uma playlist do YouTube",
+    "selectFolderButton": "Escolher pasta de músicas"
+  }
+}

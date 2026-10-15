@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Local2Playlist",
+    "slug": "local2playlist",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "local2playlist",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "android": {
+      "package": "com.laranjodupy.local2playlist",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "allowBackup": false
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
