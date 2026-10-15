@@ -61,14 +61,31 @@ comandos funcionam como estão (shell POSIX expande `~`).
 
 **Resultado:** você recebe um **Client ID** (termina em `.apps.googleusercontent.com`). Apps Android instalados **não recebem nem devem armazenar** `client_secret` (seção 5.5/15 da spec) — só o Client ID é necessário no app.
 
-## 5. O que me passar
+## 5. Credenciais confirmadas (14/10/2026)
 
-Depois de concluir os passos acima, me passe:
+- **Client ID Android:**
+  `542799348342-n53tu24i98chlh8oqhalfqqgm84uc4c9.apps.googleusercontent.com`
+  (não é segredo — apps Android não recebem `client_secret`, por isso não há
+  um a proteger aqui.)
+- **Nome do pacote:** `com.laranjodupy.local2playlist` (consistente com `app.json`).
+- **YouTube Data API v3:** ativada no projeto.
+- **Escopo OAuth selecionado:** `https://www.googleapis.com/auth/youtube`
+  (gerenciamento completo). Cobre `search.list`, `playlists.insert` e
+  `playlistItems.insert` — os três métodos que o app usa. Não ficou
+  confirmado se um escopo mais restrito (ex: um específico de
+  playlists, se existir) também seria suficiente; não investigado por não
+  ser bloqueante — o escopo de gerenciamento completo funciona e é o único
+  testado até agora.
+- **Usuários de teste:** a confirmar — se `daniel.v.lima7@aluno.senai.br` e
+  outras contas de teste foram de fato adicionadas na tela de consentimento
+  (campo separado dos escopos).
 
-- O **Client ID Android** (`...apps.googleusercontent.com`) — isso não é segredo, pode ser incluído no app.
-- O **nome do pacote** (`applicationId`) que você cadastrou, para eu manter consistente no projeto Expo.
-- Confirmação de que a YouTube Data API v3 está **ativada** no projeto.
-- Confirmação de quais **escopos** você adicionou na tela de consentimento.
+**Nota sobre o escopo:** `.../auth/youtube` é classificado pelo Google como
+escopo **sensível**. Em modo "Testing" (usuários cadastrados manualmente)
+isso não bloqueia nada. Só se tornaria relevante se o app precisasse ser
+publicado para usuários fora da lista de teste — nesse caso o processo de
+verificação do Google para escopos sensíveis entraria em jogo (fora do
+escopo da Fase 0–2).
 
 **Nunca me passe:** `client_secret` (apps Android não deveriam ter um, mas se o Console gerar algum arquivo `.json` com um, não cole aqui), nem tokens de acesso/refresh de contas reais.
 
