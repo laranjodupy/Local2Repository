@@ -30,7 +30,8 @@
             "com.googleusercontent.apps.542799348342-n53tu24i98chlh8oqhalfqqgm84uc4c9:/oauth2redirect/google"
           ]
         }
-      ]
+      ],
+      "./plugins/withGradleJvmArgs.js"
     ]
   }
 }
