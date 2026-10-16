@@ -1,3 +1,4 @@
+import { Link } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -15,6 +16,11 @@ export default function HomeScreen() {
       >
         <Text style={styles.buttonText}>{t('home.selectFolderButton')}</Text>
       </Pressable>
+
+      {/* Fase 0 spike, não faz parte do fluxo final (docs/SPEC.md seção 13) */}
+      <Link href="/oauth-spike" style={styles.spikeLink}>
+        {t('oauthSpike.title')} →
+      </Link>
     </View>
   );
 }
@@ -51,5 +57,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  spikeLink: {
+    marginTop: 32,
+    fontSize: 13,
+    opacity: 0.5,
+    textDecorationLine: 'underline',
   },
 });

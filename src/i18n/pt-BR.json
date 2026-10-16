@@ -11,5 +11,25 @@
     "title": "Local2Playlist",
     "subtitle": "Transforme sua pasta de músicas em uma playlist do YouTube",
     "selectFolderButton": "Escolher pasta de músicas"
+  },
+  "oauthSpike": {
+    "title": "Spike: Login com Google",
+    "subtitle": "Tela de teste da Fase 0 — não faz parte do fluxo final do app.",
+    "signInButton": "Entrar com Google",
+    "refreshButton": "Testar refresh",
+    "revokeButton": "Revogar e sair",
+    "signingIn": "Abrindo tela de login...",
+    "refreshing": "Renovando token...",
+    "revoking": "Revogando...",
+    "noSession": "Nenhuma sessão ainda.",
+    "sessionLabel": "Sessão obtida com sucesso:",
+    "accessTokenLabel": "Access token (primeiros caracteres)",
+    "accessTokenExpiresLabel": "Expira em",
+    "refreshTokenLabel": "Refresh token (primeiros caracteres)",
+    "errorLabel": "Erro:",
+    "errorAccessDenied": "Login cancelado ou negado pelo usuário.",
+    "errorInvalidGrant": "Sessão expirada ou revogada — faça login novamente.",
+    "errorGeneric": "Falha inesperada. Veja detalhes abaixo.",
+    "revokedMessage": "Sessão revogada e limpa localmente."
   }
 }
