@@ -22,9 +22,10 @@ import type {
  * Android device/emulator in this session (no Android environment
  * available here — docs/SPEC.md section 13, Fase 0 spike still pending).
  * In particular: whether the Custom Tabs flow actually completes, whether
- * the redirect URL registered in app.json/Google Cloud Console round-trips
- * correctly, and whether the New Architecture compatibility assumed in
- * ADR-002 holds in practice.
+ * the redirect URL registered in app.config.js/Google Cloud Console
+ * round-trips correctly for BOTH build variants (debug and release —
+ * see docs/decisions/ADR-004-release-oauth-client.md), and whether the
+ * New Architecture compatibility assumed in ADR-002 holds in practice.
  */
 export class AppAuthOAuthSessionProvider implements OAuthSessionProvider {
   async authorize(): Promise<OAuthSession> {

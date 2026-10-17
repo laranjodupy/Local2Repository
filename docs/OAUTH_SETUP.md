@@ -46,10 +46,31 @@ comandos funcionam como estão (shell POSIX expande `~`).
 ```
 
 > Este é o certificado de **debug**, válido só para builds de desenvolvimento
-> assinadas localmente. Um build de release (Play Store ou APK assinado para
-> distribuição) usa um keystore diferente, com SHA-1 diferente — será preciso
-> registrar um segundo OAuth Client ID (ou adicionar essa segunda impressão
-> digital ao mesmo client, se o Console permitir) quando chegar a Fase 3/4.
+> assinadas localmente. Um build de release usa um keystore diferente, com
+> SHA-1 diferente — ver seção 3-bis abaixo e `docs/decisions/ADR-004-release-oauth-client.md`.
+> (O Google Cloud Console não permite adicionar uma segunda impressão digital
+> ao mesmo Client ID Android — cada SHA-1 precisa do seu próprio Client ID.)
+
+## 3-bis. SHA-1 do certificado de assinatura (release)
+
+Gerado em 17/10/2026, em `%USERPROFILE%\.android\release.keystore`
+(alias `local2playlist-release`):
+
+```bat
+mkdir %USERPROFILE%\.android
+keytool -genkey -v -keystore %USERPROFILE%\.android\release.keystore -storepass SUA_SENHA -alias local2playlist-release -keypass SUA_SENHA -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Daniel Lima,O=Laranjodupy,C=BR"
+keytool -list -v -keystore %USERPROFILE%\.android\release.keystore -storepass SUA_SENHA -alias local2playlist-release
+```
+
+**SHA-1 (release):**
+```
+1A:7A:7D:A9:64:17:DF:C4:4D:34:C0:C5:AD:01:4E:1A:A7:37:23:AD
+```
+
+> **Nunca commitar** o arquivo `release.keystore` nem suas senhas neste
+> repositório. Perder esse arquivo depois de uma publicação na Play Store
+> tornaria o app impossível de atualizar sob a mesma ficha — guarde um
+> backup fora do repositório (não versionado).
 
 ## 4. Criar o OAuth Client ID (tipo Android)
 
@@ -61,13 +82,19 @@ comandos funcionam como estão (shell POSIX expande `~`).
 
 **Resultado:** você recebe um **Client ID** (termina em `.apps.googleusercontent.com`). Apps Android instalados **não recebem nem devem armazenar** `client_secret` (seção 5.5/15 da spec) — só o Client ID é necessário no app.
 
-## 5. Credenciais confirmadas (14/10/2026)
+## 5. Credenciais confirmadas
 
-- **Client ID Android:**
+- **Client ID Android (debug, 14/10/2026):**
   `542799348342-n53tu24i98chlh8oqhalfqqgm84uc4c9.apps.googleusercontent.com`
-  (não é segredo — apps Android não recebem `client_secret`, por isso não há
-  um a proteger aqui.)
-- **Nome do pacote:** `com.laranjodupy.local2playlist` (consistente com `app.json`).
+  — registrado contra o SHA-1 de debug (seção 3).
+- **Client ID Android (release, 17/10/2026):**
+  `542799348342-2t309iigu2ka09h1tvo5lv207p17ukgb.apps.googleusercontent.com`
+  — registrado contra o SHA-1 de release (seção 3-bis). Ver
+  `docs/decisions/ADR-004-release-oauth-client.md` para como o app escolhe
+  qual dos dois usar (variável `APP_VARIANT` em build-time).
+  (Nenhum dos dois é segredo — apps Android não recebem `client_secret`,
+  por isso não há um a proteger aqui.)
+- **Nome do pacote:** `com.laranjodupy.local2playlist` (consistente com `app.config.js`).
 - **YouTube Data API v3:** ativada no projeto.
 - **Escopo OAuth selecionado:** `https://www.googleapis.com/auth/youtube`
   (gerenciamento completo). Cobre `search.list`, `playlists.insert` e
