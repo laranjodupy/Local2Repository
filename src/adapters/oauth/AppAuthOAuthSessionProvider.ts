@@ -18,14 +18,16 @@ import type {
  * normalizes AppAuth's typed error codes into something usecases can
  * branch on without importing react-native-app-auth themselves.
  *
- * NOT YET VERIFIED ON DEVICE: this has not been exercised against a real
- * Android device/emulator in this session (no Android environment
- * available here — docs/SPEC.md section 13, Fase 0 spike still pending).
- * In particular: whether the Custom Tabs flow actually completes, whether
- * the redirect URL registered in app.config.js/Google Cloud Console
- * round-trips correctly for BOTH build variants (debug and release —
- * see docs/decisions/ADR-004-release-oauth-client.md), and whether the
- * New Architecture compatibility assumed in ADR-002 holds in practice.
+ * VERIFIED ON DEVICE (17/10/2026, release build only): authorize() was
+ * exercised end-to-end on a real Android device — Custom Tab opened,
+ * redirect round-tripped, tokens were received. Getting there required
+ * enabling "Custom URI scheme" under Advanced Settings on the release
+ * Client ID in Google Cloud Console (off by default for Android OAuth
+ * clients created after Oct 2023 — see the ADR-004 addendum for the
+ * full story and sources). The debug Client ID was created after that
+ * same date and likely needs the same toggle — NOT YET VERIFIED for the
+ * debug build variant, and New Architecture compatibility (ADR-002)
+ * hasn't been specifically exercised either.
  */
 export class AppAuthOAuthSessionProvider implements OAuthSessionProvider {
   async authorize(): Promise<OAuthSession> {
