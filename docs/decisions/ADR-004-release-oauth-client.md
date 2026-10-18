@@ -74,11 +74,47 @@ a mesma variante.
   compilação — o app compila normalmente, mas o login OAuth falhará no
   redirect (scheme nativo não bate com o Client ID que o JS está usando),
   o que pode ser confuso de diagnosticar sem este ADR.
-- **NÃO VERIFICADO**: nenhuma das duas variantes foi testada em
-  dispositivo ainda (nem o fluxo de login completo, nem a troca de
-  variante via `APP_VARIANT`). Continua pendente o teste real na tela
-  `/oauth-spike`.
 - A keystore de release (`release.keystore`) e suas senhas não foram e
   não devem ser commitadas neste repositório — ficam apenas na máquina
   de Daniel. Perder esse arquivo depois de uma eventual publicação na
   Play Store tornaria o app não atualizável sob a mesma ficha.
+
+## Addendum (17/10/2026): "Custom URI scheme is not enabled for your Android client"
+
+Primeiro teste real em dispositivo (dois dispositivos Windows diferentes,
+chamados aqui de "viana" e "not" — build de release compilado na segunda
+máquina após resolver espaço em disco insuficiente e mover
+`GRADLE_USER_HOME` para outro disco). O app compilou e instalou, a Custom
+Tab abriu corretamente no scheme certo (confirmado lendo
+`android/app/build.gradle` gerado: `manifestPlaceholders.appAuthRedirectScheme`
+batia exatamente com o Client ID de release), mas o Google bloqueou a
+autorização com:
+
+```
+Erro 400: invalid_request
+Custom URI scheme is not enabled for your Android client.
+```
+
+**Causa raiz:** desde outubro de 2023, o Google desabilita por padrão o
+uso de custom URI scheme como redirect para Client IDs Android **novos**
+(política anti-impersonation — ver
+[Enhancing OAuth app impersonation protections](https://developers.googleblog.com/2023/10/enhancing-oauth-app-impersonation-protections.html)
+e
+[Improving user safety in OAuth flows through new OAuth Custom URI scheme restrictions](https://developers.googleblog.com/en/improving-user-safety-in-oauth-flows-through-new-oauth-custom-uri-scheme-restrictions/)).
+O Client ID de release foi criado em 17/10/2026 — muito depois dessa
+mudança — então caía nesse bloqueio por padrão. Isso não tinha como ser
+detectado sem testar em dispositivo: nem o `build.gradle` gerado nem o
+código do app davam sinal de que o problema estava do lado do Google
+Cloud Console, não do app.
+
+**Solução:** na página de detalhes do Client ID (Google Cloud Console →
+Credenciais → clicar no Client ID), expandir **"Configurações
+avançadas"** e confirmar "Sim" no diálogo "Quer ativar o esquema de URI
+personalizado para este cliente?". É uma configuração por Client ID, não
+por projeto.
+
+**Ação pendente:** o Client ID de **debug**
+(`...n53tu24i98chlh8oqhalfqqgm84uc4c9...`) foi criado em 14/10/2026,
+também depois de outubro de 2023, então provavelmente tem o mesmo
+bloqueio latente — precisa da mesma ativação antes de qualquer teste de
+login em build debug, mas isso ainda não foi feito nem confirmado.
