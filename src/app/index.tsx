@@ -17,9 +17,12 @@ export default function HomeScreen() {
         <Text style={styles.buttonText}>{t('home.selectFolderButton')}</Text>
       </Pressable>
 
-      {/* Fase 0 spike, não faz parte do fluxo final (docs/SPEC.md seção 13) */}
+      {/* Fase 0 spikes, não fazem parte do fluxo final (docs/SPEC.md seção 13) */}
       <Link href="/oauth-spike" style={styles.spikeLink}>
         {t('oauthSpike.title')} →
+      </Link>
+      <Link href="/saf-spike" style={styles.spikeLink}>
+        {t('safSpike.title')} →
       </Link>
     </View>
   );

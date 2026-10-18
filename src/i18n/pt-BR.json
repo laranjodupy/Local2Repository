@@ -31,5 +31,21 @@
     "errorInvalidGrant": "Sessão expirada ou revogada — faça login novamente.",
     "errorGeneric": "Falha inesperada. Veja detalhes abaixo.",
     "revokedMessage": "Sessão revogada e limpa localmente."
+  },
+  "safSpike": {
+    "title": "Spike: SAF e metadados",
+    "subtitle": "Tela de teste da Fase 0 — não faz parte do fluxo final do app.",
+    "pickButton": "Escolher pasta e escanear",
+    "noScan": "Nenhum escaneamento ainda.",
+    "picking": "Abrindo seletor de pasta...",
+    "listing": "Listando arquivos recursivamente...",
+    "reading": "Lendo metadados ({{done}}/{{total}})...",
+    "summaryLabel": "Resultado do escaneamento:",
+    "fileCount": "{{count}} arquivo(s) encontrado(s)",
+    "listTime": "Tempo de listagem: {{ms}} ms",
+    "readTime": "Tempo de leitura de metadados: {{ms}} ms",
+    "errorCount": "{{count}} arquivo(s) com erro de leitura",
+    "fileError": "Erro",
+    "errorLabel": "Erro:"
   }
 }
